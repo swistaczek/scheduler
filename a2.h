@@ -14,17 +14,17 @@
 #define FALSE 0
 
 typedef struct {
-    int id,         // the id of the job
-        arrive,     // the arrive time
-        burst,      // the remaining burst time
-        waiting,    // the cumulative wait time
-        start,      // the start time
-        end,        // the end time
-        priority,   // the priority of the job
-        service;    // most recent service time
+    int id,         // id zadania 
+        arrive,     // czas przybycia
+        burst,      // pozostaly czas dzialania
+        waiting,    // suma czasow czekania
+        start,      // czas rozpcozecia
+        end,        // czas zakonczenia
+        priority,   // priorytet
+        service;    // najaktualniejszy serwowany element
 } job;
 
-// Scheduler Algorithms (used by getopts parser)
+// Algorytmy przetwarzania (uzwanye przez getopts parser)
 enum {
   SJF = 0,
   FCFS,
@@ -33,7 +33,7 @@ enum {
   UNIX,
   THE_END
 };
-// Scheduler Algorithms (used by getopts parser)
+// Algorytmy przetwarzania (uzwanye przez getopts parser)
 char *scheduler_opts[] = {
   [SJF]     = "sjf",
   [FCFS]    = "fcfs",
@@ -44,33 +44,33 @@ char *scheduler_opts[] = {
 
 };
 
-//global variable to sum all context switches
+//zmienne globalne
 int sum_context = 0;
 
-// comparison routines
-//     each takes two pointers to obects and compares them, returning
-//     0 if they are equal, a negative value if a < b, or a positive
-//     value if a > b
+// zasada porowniania
+//     za kazdym razem wez dwa wskazniki do obiektu i porownaj je, zwracajac
+//     0 jezeli sa rowne, falsz jezeli a < b, albo prawde
+//     jezeli a > b
 int fcfs_comparison(void *a, void *b);
 int sjf_comparison(void *a, void *b);
 int srtf_comparison(void *a, void *b);
 int rr_comparison(void *a, void *b);
 int id_comparison(void *a, void *b);
 
-// processing routines
+// przetwarzanie
 void build_job(job *j, int id, int arrive, int burst);
 void increment_waits(heap *h);
 void generate_jobs(heap *h, int (*comp_func)(void*, void*), int number_of_jobs);
 void read_jobs_from_file(heap *h, int (*comp_func)(void*, void*), char *filename);
 void process_jobs(int (*comp_func)(void*, void*), char *filename, int n, int verbose);
 
-// printing routines
+// wyswietlanie
 void print_title(int (*comp_func)(void*, void*));
 void print_job(job *j);
 void print_results(heap *c, int verbose);
 void print_usage(int argc, char *argv[]);
 
-// compare based on arrive time, then id
+// porownywanie oparte na czasie pojawienia sie, potem id 
 int fcfs_comparison(void *a, void *b)
 {
     int retval;
@@ -79,7 +79,7 @@ int fcfs_comparison(void *a, void *b)
     return retval;
 }
 
-// compare based on remaining burst time, then by id
+// porownainie oparte na czasie pozostalym do przetworzenia, potem id
 int sjf_comparison(void *a, void *b)
 {
     int retval;
@@ -88,7 +88,7 @@ int sjf_comparison(void *a, void *b)
     return retval;
 }
 
-// compare based on remaining burst time (but with preemption), then by id
+// porownanie oparte na pozostalym czasie przetworzenia (lecz z wywlaszczeniem), potem wg. id
 int srtf_comparison(void *a, void *b)
 {
     int retval;
@@ -97,7 +97,7 @@ int srtf_comparison(void *a, void *b)
     return retval;
 }
 
-// compare based on priority first, then by arrive time, then by id
+// porownanie oparte na priorytetach, potem na id
 int rr_comparison(void *a, void *b)
 {
     int retval;
@@ -107,7 +107,7 @@ int rr_comparison(void *a, void *b)
     return retval;
 }
 
-// compare based on priority first, then by arrive time, then by id
+// porownanie oparte na priorytecie, potem na id
 int unix_comparison(void *a, void *b)
 {
     int retval;
@@ -117,13 +117,13 @@ int unix_comparison(void *a, void *b)
     return retval;
 }
 
-// compare based on id (for administrative purposes only)
+// porownanie oparte na id
 int id_comparison(void *a, void *b)
 {
     return (((job*)b)->id - ((job*)a)->id);
 }
 
-// populates a job based on given data
+// tworzenie zadan w oparciu o dane
 void build_job(job *j, int id, int arrive, int burst)
 {
     j->id       = id;
@@ -137,7 +137,7 @@ void build_job(job *j, int id, int arrive, int burst)
     return;
 }
 
-// iterates through all jobs and increments their "wait" value
+// iterowanie przez wszystkie zadanaia i zwiekszenie ich sumarycznego czasu oczekiwania
 void increment_waits(heap *h)
 {
     int i;
@@ -146,17 +146,7 @@ void increment_waits(heap *h)
     return;
 }
 
-// iterates through all jobs and recalculates priorites (for unix scheduler only).
-// clarification from instructor, Saurav Karmakar, below:
-// The calculation of CPU usage is just calculation of frequency of
-// usage. Suppose the base=60 and assume that recent CPU usage for
-// process P1 is 40, process P2 is 18, and process P3 is 10 at time
-// t0(i.e P1 has used CPU 40 times since last time you checked and so
-// on). Now what will be the new priorities for these three processes
-// when priorities are recalculated, say at t1?
-//  Priority for P1= (40/2)+60=80
-//  Priority for P2= (18/2)+60=69
-//  Priority for P1= (10/2)+60=65
+// iteruj przez wszystkie zadania i przelicz priorytety
 void recalculate_priorities(heap *h, int current_time)
 {
     int i;
@@ -168,7 +158,7 @@ void recalculate_priorities(heap *h, int current_time)
     return;
 }
 
-// generates random jobs and inserts them into the provided queue
+// utworz losowe zadania i wstaw je na stos
 void generate_jobs(heap *h, int (*comp_func)(void*, void*), int number_of_jobs)
 {
     int i,
@@ -187,7 +177,7 @@ void generate_jobs(heap *h, int (*comp_func)(void*, void*), int number_of_jobs)
     return;
 }
 
-// reads jobs from a CSV file. format is "arrive,burst,priority" one per line.
+// odczytaj zadania z pliku CSV. format pliku "arrive,burst,priority" - jeden rekord na linie.
 void read_jobs_from_file(heap *h, int (*comp_func)(void*, void*), char *filename)
 {
     char buffer[256];
@@ -200,7 +190,6 @@ void read_jobs_from_file(heap *h, int (*comp_func)(void*, void*), char *filename
         while (!feof(fp)) {
             fgets(buffer, 256, fp); // read a line
 
-            // tokenize the line by commas and newlines
             if(strlen(buffer) > 1) {        
                 if((temp = strtok(buffer, ",\n")) != NULL && strlen(temp) > 0)
                     arrive += strtol(temp, NULL, 10);
@@ -220,35 +209,35 @@ void read_jobs_from_file(heap *h, int (*comp_func)(void*, void*), char *filename
     return;
 }
 
-// this is the heart of the scheduler
-// comp_func    - a comparison function to use to determine priority
-// filename     - a file to read data from
-// n            - number of random jobs to generate (if we're not reading from file)
-// verbose      - if true, will print job data for each CPU cycle
+// serce programu
+// comp_func    - funkcja uzyta do pozyskania priorytetu 
+// filename     - plik z danmi wejsciowymi 
+// n            - liczba procesow do wygenerowania (jezeli nie uzywamy danych z pliku)
+// verbose      - jezeli prawda, zwroci informacje odnosnie kazdego 
 void process_jobs(int (*comp_func)(void*, void*), char *filename, int n, int verbose)
 {
-    int i; // this is the primary counter variable
+    int i; // glowna wartosc licznika
     int done = FALSE;
-    job *current = NULL; // this is the currently processing job
+    job *current = NULL; // aktualnie przetwarzane zadanie
 
-    heap *g = malloc(sizeof(heap)); // genereated queue - holds jobs either generated or read from file
-    heap *p = malloc(sizeof(heap)); // process queue - holds jobs currently being processed
-    heap *c = malloc(sizeof(heap)); // complete queue - hold jobs that have been processed
+    heap *g = malloc(sizeof(heap)); // tworzy kolejke - trzyma zadania wygenerowane albo przeczytane z pliku
+    heap *p = malloc(sizeof(heap)); // kolejka procesow - trzyma przetwarzane zadania
+    heap *c = malloc(sizeof(heap)); // kolejka przetworzonych procesow - trzyma zadania ktore zostaly juz przetworzone
     heap_init(g);
     heap_init(p);
     heap_init(c);
 
-    if(filename) // if we got a filename, lets read data from the file
+    if(filename) // jezeli mamy plik  to go przeczytajmy 
         read_jobs_from_file(g, fcfs_comparison, filename);
-    else // otherwise, we'll just generate some random data
+    else // w innym wypadku sami generujemy dane
         generate_jobs(g, fcfs_comparison, n);
 
     print_title(comp_func);
     
     for(i = 0; !done; i++)
     {
-        // grab the next "arrived" jobs out of the generated queue and put
-        // them into the process queue
+        // pobierz nastepny "nadchodzacy" proces z kolejki i 
+				// wstaw na kolejke do przetwarzania
         job *insert, *temp;
         while((insert = heap_extract_max(g, fcfs_comparison)) && insert->arrive <= i) {
             if(comp_func == &rr_comparison) insert->priority = i;
@@ -256,14 +245,14 @@ void process_jobs(int (*comp_func)(void*, void*), char *filename, int n, int ver
             if(comp_func == &unix_comparison) recalculate_priorities(p, i);                     
             insert = NULL;
         }
-        if(insert && insert->arrive > i) // we might have pulled one too many out in the while loop
-            heap_insert(g, fcfs_comparison, insert); // so put it back
+        if(insert && insert->arrive > i) // mozemy wstawic za duzo elementow 
+            heap_insert(g, fcfs_comparison, insert); // wiec wstawmy je spowrotem
 
         if(current == NULL) {
             temp = current;
             current = heap_extract_max(p, comp_func);
             if(temp != current) {
-                if(verbose) printf("clock: %2d\tcontext switch\n", i++);
+                if(verbose) printf("zegar: %2d\tzmiana kontekstu\n", i++);
                 sum_context++;
                 increment_waits(p);
             }
@@ -279,7 +268,7 @@ void process_jobs(int (*comp_func)(void*, void*), char *filename, int n, int ver
                 if(comp_func == &unix_comparison) recalculate_priorities(p, i);
                 current = heap_extract_max(p, comp_func);
                 if(temp != current) {
-                    if(verbose) printf("clock: %2d\tcontext switch\n", i++);
+                    if(verbose) printf("zegar: %2d\tzmiana kontekstu\n", i++);
                     sum_context++;
                     increment_waits(p);
                 }
@@ -287,34 +276,34 @@ void process_jobs(int (*comp_func)(void*, void*), char *filename, int n, int ver
         }
         if(current == NULL) {
             if(g->size == 0) done = TRUE;
-            else if(verbose) printf("clock: %2d\tidle\n", i);
+            else if(verbose) printf("zegar: %2d\tidle\n", i);
         }
         else {
             if(current->arrive <= i) {
-                if(current->start < 0) current->start = i; // markstart if first time at CPU
-                current->service++; // increment the service time
-                current->burst--; // decrement the remaining burst time
+                if(current->start < 0) current->start = i; // zaznacz start jezeli pierwszy raz na aktywnej kolejce CPU
+                current->service++; // zwieksz czas obslugi 
+                current->burst--; // zmniejsz pozostaly czas do zakonczenia 
                 if(verbose) {
-                    printf("clock: %2d\t", i);
+                    printf("zegar: %2d\t", i);
                     print_job(current);
                 }
 
-                // if we're done with this job, then put it in the "complete" queue
+                // jezeli zadanie zostalo zakonczone, przesun je na skonczona kolejke
                 if(current->burst <= 0) {
-                    current->end = i; // mark the end time for the outgoing job
-                    heap_insert(c, id_comparison, current); // put the job in the "complete" queue
+                    current->end = i; // zaznacz czas zakonczenia dla ukonczonego zadania 
+                    heap_insert(c, id_comparison, current); // wstaw zadanie na kolejke zadan przetworzonych
                     current = NULL;
                 }
-                increment_waits(p); // for all "waiting" jobs, increment their "wait" value
+                increment_waits(p); // zwieksz sumaryczna wartosc czekania dla wszystkich zadan ktore oczekuja
             }
-            else if(verbose) printf("clock: %2d\tidle\n", i);
+            else if(verbose) printf("zegar: %2d\tidle\n", i);
         }
     }
-    print_results(c, verbose); // print all algorithm analysis results
+    print_results(c, verbose); // wypisz podsumowanie i analize przeprowadzonych obliczen
     return;
 }
 
-// prints a title
+// wyswietl nazwe wybranego algorytmu
 void print_title(int (*comp_func)(void*, void*))
 {
     char *algorithm_name = NULL;
@@ -334,10 +323,10 @@ void print_title(int (*comp_func)(void*, void*))
     return;
 }
 
-// print the given job
+// wyswietl przetwarzane zadanie
 void print_job(job *j)
 {
-    printf("id: %3d\tarrive: %4d\tburst: %4d\twaiting: %4d\tstart: %4d\tend: %4d\tpriority: %4d\tservice: %4d\n",
+    printf("id: %3d\tprzybycie: %4d\tburst: %4d\tczekanie: %4d\tstart: %4d\tkoniec: %4d\tpriorytet: %4d\tobsluga: %4d\n",
         j->id,
         j->arrive,
         j->burst,
@@ -349,7 +338,7 @@ void print_job(job *j)
     return;
 }
 
-// print all analytical results
+// wyswietl podsumowanie i analize
 void print_results(heap *c, int verbose)
 {
     job *current       = NULL;
@@ -359,7 +348,7 @@ void print_results(heap *c, int verbose)
         sum_turnaround = 0,
         sum_response   = 0,
         max_end        = 0;
-    if(verbose) printf("final job values:\n");
+    if(verbose) printf("final przetwarzania zadania:\n");
     while((current = heap_extract_max(c, id_comparison))) {
         sum_service += current->service;
         sum_waiting += current->waiting;
@@ -368,28 +357,28 @@ void print_results(heap *c, int verbose)
         max_end = max_end > current->end ? max_end : current->end;
         if(verbose) print_job(current);
     }
-    printf("final statistics:\n");
-    printf(" number of jobs:\t\t%d jobs\n", number_of_jobs);
-    printf(" throughput:\t\t\t%3.2f jobs/ms\n", (float)number_of_jobs / (float)max_end);
-    printf(" utilization:\t\t\t%3.2f%%\n", ((float)sum_service/((float)sum_context + (float)sum_service)) * 100.0);
-    printf(" average turnaround time:\t%3.2f ms\n", (float)sum_turnaround / (float)number_of_jobs);
-    printf(" average response time:\t\t%3.2f ms\n", (float)sum_response / (float)number_of_jobs);
-    printf(" average waiting time:\t\t%3.2f ms\n", (float)sum_waiting / (float)number_of_jobs);
+    printf("podsumowanie:\n");
+    printf(" razem zadan:\t\t%d zadan\n", number_of_jobs);
+    printf(" przepustowosc:\t\t\t%3.2f zadan/ms\n", (float)number_of_jobs / (float)max_end);
+    printf(" wykorzystanie cpu:\t\t\t%3.2f%%\n", ((float)sum_service/((float)sum_context + (float)sum_service)) * 100.0);
+    printf(" czas przetworzenia:\t%3.2f ms\n", (float)sum_turnaround / (float)number_of_jobs);
+    printf(" czas odpowiedzi:\t\t%3.2f ms\n", (float)sum_response / (float)number_of_jobs);
+    printf(" czas oczekiwania:\t\t%3.2f ms\n", (float)sum_waiting / (float)number_of_jobs);
     return;
 }
 
-// print the command line usage
+// zwroc pomoc, opcje uzycia 
 void print_usage(int argc, char *argv[])
 {
-    printf("usage:\t\t%s [OPTIONS]\n", argv[0]);
-    printf("example:\t%s -i data.txt -s sjf,fcfs,srtf -v\n", argv[0]);
-    printf("\t\t%s -n 5 -s sjf\n", argv[0]);
-    printf("options:\n");
-    printf(" -h\t\tPrint this message.\n");
-    printf(" -i <file>\tRead comma-separated file with arrive,burst\n");
-    printf(" -n <number>\tNumber of jobs to generate if not reading from file.\n");
-    printf(" -s <sched(s)>\tSpecify scheduler(s) to use.\n");
-    printf(" \t\tValid schedulers are: sjf, fcfs, srtf, rr, unix\n");
-    printf(" -v\t\tVerbose mode. Prints an output for each CPU cycle.\n");
+    printf("uzycie:\t\t%s [OPCJE]\n", argv[0]);
+    printf("przyklad:\t%s -i data.txt -s srtf -v\n", argv[0]);
+    printf("\t\t%s -n 5 -s srtf\n", argv[0]);
+    printf("opcje:\n");
+    printf(" -h\t\Pokazuje ta wiadomosc.\n");
+    printf(" -i <plik>\tOczytuje plik oddzielony przecinkami CZAS_PRZYBYCIA,CZAS_DZIALANIA\n");
+    printf(" -n <liczba>\tIlosc zdan do wykonania jezeli plik nie jest podany.\n");
+    printf(" -s <algorytm>\tUzywny algorytm.\n");
+    printf(" \t\tZaimplementowane algorytmy: sjf, srtf\n");
+    printf(" -v\t\tTryb debugowania. Wyswietla kazdy cykl procesora.\n");
     return;
 }

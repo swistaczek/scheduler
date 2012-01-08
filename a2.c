@@ -54,7 +54,7 @@ int main (int argc, char *argv[])
                     unix_sched = 1;
                     break;
                 default:
-                    printf("unknown scheduler passed in list to -s\n");
+                    printf("nieznany algorytm sortowania -s\n");
                     break;
             }
             no_scheduler = 0;
@@ -65,17 +65,17 @@ int main (int argc, char *argv[])
             break;
     }
     if(number_of_jobs > 0 && filename) {
-        fprintf(stderr, "cannot specify both -n and -i parameters.\n");
+        fprintf(stderr, "nie mozna podac dwoch parametrow -n oraz -i.\n");
         print_usage(argc, argv);
         return 1;
     }
     if(number_of_jobs == 0 && filename == NULL) {
-        fprintf(stderr, "must specify either -n or -i parameter.\n");
+        fprintf(stderr, "musisz podac -n albo -i.\n");
         print_usage(argc, argv);
         return 1;
     }
     if(no_scheduler) {
-        fprintf(stderr, "must specify a scheduler with -s parameter.\n");
+        fprintf(stderr, "musisz podac algorytm sortowania poprzez parametr -s.\n");
         print_usage(argc, argv);
         return 1;
     }
