@@ -32,9 +32,6 @@ Program można uruchomić skryptem (runall.sh) bądź manualnie (./a2) jak opisa
 
 # Systemy operacyjne
 # Algorytmy czasu procesora
-#### Ernest Bursa
-#### Politechnika Poznańska
-#### ernest@bzdury.pl
 
 ## Wstęp
 Zadaniem programu jest zademonostrowanie działania algorytmów przydziału czasu procesora. Dane wprowadza się manualnie bądź zleca się ich generacje maszynie pseudolosowej. 
@@ -108,6 +105,6 @@ Aby symulować działanie prawdziwych systemów potrzebujemy generator danych lo
 Badania ekspertów pokazują że gdy responsywność jest najważniejszą cechą systemu (np. system przeznaczony do bezpośredniego kontaktu z użytkownikiem) kolejkowanie POSIX powinno zapewnić maksimum wydajnośći wg. tego priorytetu, natomiast FCFS zupełnie nie nadaje się do tego typu zadań. Algorytm Round Robin ma okropną średnią czasów oczekiwania w porównaniu do innych algorytmów. Algorytmy SJF i SRTF dają sobie radę w większości przypadków. Tak czy inaczej wybór konkretnego algorytmu powinien być dopasowany do specyfiki obsługiwanych aplikacji. 
 
 ## 4. Bibliografia
-[1] Weisstein, Eric W. "Exponential Distribution." From MathWorld--A Wolfram Web Resource. [http://mathworld.wolfram.com/ExponentialDistribution.html](http://mathworld.wolfram.com/ExponentialDistribution.html)
-[2] Wikipedia [http://en.wikipedia.org/wiki/Shortest_remaining_time](http://en.wikipedia.org/wiki/Shortest_remaining_time)
-[3] Materiały uniwersytetu Stanford [http://www.scs.stanford.edu/07au-cs140/notes/l5.pdf](http://www.scs.stanford.edu/07au-cs140/notes/l5.pdf)
+* Weisstein, Eric W. "Exponential Distribution." From MathWorld--A Wolfram Web Resource. [http://mathworld.wolfram.com/ExponentialDistribution.html](http://mathworld.wolfram.com/ExponentialDistribution.html)
+* Wikipedia [http://en.wikipedia.org/wiki/Shortest_remaining_time](http://en.wikipedia.org/wiki/Shortest_remaining_time)
+* Materiały uniwersytetu Stanford [http://www.scs.stanford.edu/07au-cs140/notes/l5.pdf](http://www.scs.stanford.edu/07au-cs140/notes/l5.pdf)
