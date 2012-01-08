@@ -6,16 +6,27 @@ Ten projekt został zrealizowany na zajęcia z Systemów Operacyjnych prowadzony
 Proszę uruchom "make clean && make" aby skompilować program.
 Program można uruchomić skryptem (runall.sh) bądź manualnie (./a2) jak opisano niżej:
 
-    użycie:          ./a2 [OPTIONS]
-    opcje:          ./a2 -i data.txt -s sjf,fcfs,srtf -v
-                    ./a2 -n 5 -s sjf
+    uzycie:		./a2 [OPCJE]
+    przyklad:	./a2 -i data.txt -s srtf -v
+    		./a2 -n 5 -s srtf
     opcje:
-     -h             Pokazuje tą wiadomość.
-     -i <file>      Odczytuje plik oddzielony przecinkami CZAS_PRZYBYCIA.
-     -n <number>    Ilość zadań do wykonania jeżeli plik nie jest. 
-     -s <sched(s)>  Używany algorytm.
-                    Zaimplementowane algorytmy: sjf, srtf
-     -v             Tryb debuowania. Wyświetla każdy cykl procesora.
+     -h		Pokazuje ta wiadomosc.
+     -i <plik>	Oczytuje plik oddzielony przecinkami CZAS_PRZYBYCIA,CZAS_DZIALANIA
+     -n <liczba>	Ilosc zdan do wykonania jezeli plik nie jest podany.
+     -s <algorytm>	Uzywny algorytm.
+     		Zaimplementowane algorytmy: sjf, srtf
+     -v		Tryb debugowania. Wyswietla kazdy cykl procesora.
+    musisz podac -n albo -i.
+    uzycie:		./a2 [OPCJE]
+    przyklad:	./a2 -i data.txt -s srtf -v
+    		./a2 -n 5 -s srtf
+    opcje:
+     -h		Pokazuje ta wiadomosc.
+     -i <plik>	Oczytuje plik oddzielony przecinkami CZAS_PRZYBYCIA,CZAS_DZIALANIA
+     -n <liczba>	Ilosc zdan do wykonania jezeli plik nie jest podany.
+     -s <algorytm>	Uzywny algorytm.
+     		Zaimplementowane algorytmy: sjf, srtf
+     -v		Tryb debugowania. Wyswietla kazdy cykl procesora.
 
 ---
 
@@ -98,3 +109,5 @@ Badania ekspertów pokazują że gdy responsywność jest najważniejszą cechą
 
 ## 4. Bibliografia
 [1] Weisstein, Eric W. "Exponential Distribution." From MathWorld--A Wolfram Web Resource. [http://mathworld.wolfram.com/ExponentialDistribution.html](http://mathworld.wolfram.com/ExponentialDistribution.html)
+[2] Wikipedia [http://en.wikipedia.org/wiki/Shortest_remaining_time](http://en.wikipedia.org/wiki/Shortest_remaining_time)
+[3] Materiały uniwersytetu Stanford [http://www.scs.stanford.edu/07au-cs140/notes/l5.pdf](http://www.scs.stanford.edu/07au-cs140/notes/l5.pdf)
