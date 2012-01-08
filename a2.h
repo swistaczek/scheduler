@@ -27,19 +27,13 @@ typedef struct {
 // Algorytmy przetwarzania (uzwanye przez getopts parser)
 enum {
   SJF = 0,
-  FCFS,
   SRTF,
-  RR,
-  UNIX,
   THE_END
 };
 // Algorytmy przetwarzania (uzwanye przez getopts parser)
 char *scheduler_opts[] = {
   [SJF]     = "sjf",
-  [FCFS]    = "fcfs",
   [SRTF]    = "srtf",
-  [RR]      = "rr",
-  [UNIX]    = "unix",
   [THE_END] = NULL
 
 };
@@ -374,7 +368,7 @@ void print_usage(int argc, char *argv[])
     printf("przyklad:\t%s -i data.txt -s srtf -v\n", argv[0]);
     printf("\t\t%s -n 5 -s srtf\n", argv[0]);
     printf("opcje:\n");
-    printf(" -h\t\Pokazuje ta wiadomosc.\n");
+    printf(" -h\t\tPokazuje ta wiadomosc.\n");
     printf(" -i <plik>\tOczytuje plik oddzielony przecinkami CZAS_PRZYBYCIA,CZAS_DZIALANIA\n");
     printf(" -n <liczba>\tIlosc zdan do wykonania jezeli plik nie jest podany.\n");
     printf(" -s <algorytm>\tUzywny algorytm.\n");

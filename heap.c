@@ -1,6 +1,7 @@
 #include "heap.h"
 // obsluga stosu
 
+// initializacja stosu
 // ustaw rozmiar stosu na zero i NULL na wszystkie wartosci
 void heap_init(heap *h)
 {
@@ -11,6 +12,7 @@ void heap_init(heap *h)
     return;
 }
 
+// najwiekszy element ze stosu wg. przeslanej funkcji porownania
 // Zapozyczone z ksiazki Introduction to Algorithms, 1990, Cormen, Leiserson, Rivest, and Stein,
 // Rozdzial 7, Sekcja 7.2
 void heapify(heap *h, int (*comp_func)(void*, void*), int i)
@@ -32,6 +34,7 @@ void heapify(heap *h, int (*comp_func)(void*, void*), int i)
     return;
 }
 
+// zbuduj stos
 // Zapozyczone z ksiazki Introduction to Algorithms, 1990, Cormen, Leiserson, Rivest, and Stein,
 // Rozdzial 7, Sekcja 7.3
 void build_heap(heap *h, int (*comp_func)(void*, void*))
@@ -42,6 +45,7 @@ void build_heap(heap *h, int (*comp_func)(void*, void*))
     return;
 }
 
+// maxymalna wartosc ze stosu
 // Zapozyczone z ksiazki Introduction to Algorithms, 1990, Cormen, Leiserson, Rivest, and Stein,
 // Rozdzial 7, Sekcja 7.5
 void* heap_extract_max(heap *h, int (*comp_func)(void*, void*))
@@ -56,6 +60,7 @@ void* heap_extract_max(heap *h, int (*comp_func)(void*, void*))
     return max;
 }
 
+// wsadzanie na stos
 // Zapozyczone z ksiazki Introduction to Algorithms, 1990, Cormen, Leiserson, Rivest, and Stein,
 // Rozdzial 7, Sekcja 7.5
 void heap_insert(heap *h, int (*comp_func)(void*, void*), void *key)
